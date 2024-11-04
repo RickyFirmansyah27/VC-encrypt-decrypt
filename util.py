@@ -8,44 +8,30 @@ def new_alph(ch):
 def encrypt(text, big_key):
     res = ''
     alph = 'abcdefghijklmnopqrstuvwxyz'
-    i = 1
-    for char in big_key:
-        new = new_alph(char)
-        for t in text:
-            if alph.count(t) == 1 :
-                res += new[alph.index(t)]
-                text = text[i:]
-                break
-            elif alph.count(t.lower()) == 1:
-                res += new[alph.index(t.lower())].upper()
-                text = text[i:]
-                break
+    for i, char in enumerate(text):
+        if char.isalpha():
+            key_char = big_key[i].lower()
+            shift = alph.index(key_char)
+            if char.islower():
+                res += alph[(alph.index(char) + shift) % 26]
             else:
-                res += t
-                text = text[i:]
-                break
-            i += 1    
+                res += alph[(alph.index(char.lower()) + shift) % 26].upper()
+        else:
+            res += char
     return res
-    
+
     
 def decrypt(text, big_key):
     res = ''
     alph = 'abcdefghijklmnopqrstuvwxyz'
-    i = 1
-    for char in big_key:
-        new = new_alph(char)
-        for t in text:
-            if alph.count(t) == 1 :
-                res += alph[new.index(t)]
-                text = text[i:]
-                break
-            elif alph.count(t.lower()) == 1:
-                res += alph[new.index(t.lower())].upper()
-                text = text[i:]
-                break
+    for i, char in enumerate(text):
+        if char.isalpha():
+            key_char = big_key[i].lower()
+            shift = alph.index(key_char)
+            if char.islower():
+                res += alph[(alph.index(char) - shift) % 26]
             else:
-                res += t
-                text = text[i:]
-                break
-            i += 1    
-    return res 
+                res += alph[(alph.index(char.lower()) - shift) % 26].upper()
+        else:
+            res += char
+    return res
